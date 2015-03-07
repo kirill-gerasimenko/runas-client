@@ -61,20 +61,38 @@ namespace RunAsClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Specified command is invalid.
+        /// </summary>
+        internal static string InvalidCommandOption {
+            get {
+                return ResourceManager.GetString("InvalidCommandOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specified domain is invalid.
         /// </summary>
-        internal static string WrongDomainOption {
+        internal static string InvalidDomainOption {
             get {
-                return ResourceManager.GetString("WrongDomainOption", resourceCulture);
+                return ResourceManager.GetString("InvalidDomainOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specified password is invalid.
+        /// </summary>
+        internal static string InvalidPasswordOption {
+            get {
+                return ResourceManager.GetString("InvalidPasswordOption", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Specified username is invalid.
         /// </summary>
-        internal static string WrongUsernameOption {
+        internal static string InvalidUsernameOption {
             get {
-                return ResourceManager.GetString("WrongUsernameOption", resourceCulture);
+                return ResourceManager.GetString("InvalidUsernameOption", resourceCulture);
             }
         }
     }

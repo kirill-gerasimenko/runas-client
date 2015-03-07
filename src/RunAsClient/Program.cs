@@ -13,32 +13,32 @@ namespace RunAsClient
             {
                 if (string.IsNullOrWhiteSpace(options.Domain))
                 {
-                    Console.WriteLine(Resources.WrongDomainOption);
+                    Console.WriteLine(Resources.InvalidDomainOption);
                     return -1;
                 }
 
                 if (string.IsNullOrWhiteSpace(options.UserName))
                 {
-                    Console.WriteLine(Resources.WrongUsernameOption);
+                    Console.WriteLine(Resources.InvalidUsernameOption);
                     return -1;
                 }
 
+                if (string.IsNullOrWhiteSpace(options.Password))
+                {
+                    Console.WriteLine(Resources.InvalidPasswordOption);
+                    return -1;
+                }
 
+                if (string.IsNullOrWhiteSpace(options.Command))
+                {
+                    Console.WriteLine(Resources.InvalidCommandOption);
+                    return -1;
+                }
 
-                var nameParts = args[0].Split(new [] { @"\" }, 
-                    StringSplitOptions.RemoveEmptyEntries);
-
-                return -2;
-
-                var domain = nameParts[0];
-                var username = nameParts[1];
-                var password = args[1];
-                var command = args[2];
-
-                return Win32.LaunchCommand(command, 
-                                           domain, 
-                                           username, 
-                                           password);
+                return Win32.LaunchCommand(options.Command, 
+                                           options.Domain, 
+                                           options.UserName, 
+                                           options.Password);
             }
         }
     }

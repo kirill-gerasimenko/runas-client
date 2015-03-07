@@ -117,10 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="WrongDomainOption" xml:space="preserve">
+  <data name="InvalidCommandOption" xml:space="preserve">
+    <value>Specified command is invalid</value>
+  </data>
+  <data name="InvalidDomainOption" xml:space="preserve">
     <value>Specified domain is invalid</value>
   </data>
-  <data name="WrongUsernameOption" xml:space="preserve">
+  <data name="InvalidPasswordOption" xml:space="preserve">
+    <value>Specified password is invalid</value>
+  </data>
+  <data name="InvalidUsernameOption" xml:space="preserve">
     <value>Specified username is invalid</value>
   </data>
 </root>
