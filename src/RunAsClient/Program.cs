@@ -35,11 +35,12 @@ namespace RunAsClient
                     return -1;
                 }
 
-                return Win32.LaunchCommand(options.Command, 
-                                           options.Domain, 
-                                           options.UserName, 
-                                           options.Password);
+                return RunAsLauncher.LaunchCommand(options.Command, 
+                                                   options.Domain, 
+                                                   options.UserName, 
+                                                   options.Password);
             }
+            return -1;
         }
     }
 
