@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<metadata>
+		<id>RunAsClient.Core</id>
+		<version>0.0.0</version>
+		<authors>Kirill Gerasimenko</authors>
+		<description><![CDATA[Allows to run process under other (untrusted) domain credentials. Original sample can be found at http://blogs.msdn.com/b/alejacma/archive/2007/12/20/how-to-call-createprocesswithlogonw-createprocessasuser-in-net.aspx]]></description>
+	</metadata>
+  <files>
+    <file src="RunAsClient.Core.dll" target="lib/net4" />
+  </files>
+</package>
