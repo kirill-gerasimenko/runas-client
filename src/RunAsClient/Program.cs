@@ -16,6 +16,13 @@ namespace RunAsClient
             options.WriteOptionDescriptions(Console.Out);
         }
 
+        private static void ShowErrorMessage(string errorMessage)
+        { 
+            Console.Write(@"RunAsClient: ");
+            Console.WriteLine(errorMessage);
+            Console.WriteLine(Resources.TryHelpOption);
+        }
+
         public static void Main(string[] args)
         {
             var showUsage = false;
@@ -40,10 +47,7 @@ namespace RunAsClient
             }
             catch (OptionException e)
             {
-                Console.Write(@"RunAsClient: ");
-                Console.WriteLine(e.Message);
-                Console.WriteLine(Resources.TryHelpOption);
-
+                ShowErrorMessage(e.Message);
                 return;
             }
 
@@ -56,12 +60,10 @@ namespace RunAsClient
             Func<string, string, bool> validateWithMessage =
                 (option, errorMessage) =>
             {
-                if (!string.IsNullOrWhiteSpace(domain)) 
+                if (!string.IsNullOrWhiteSpace(option)) 
                     return true;
 
-                Console.WriteLine(errorMessage);
-                Console.WriteLine(Resources.TryHelpOption);
-
+                ShowErrorMessage(errorMessage);
                 return false;
             };
 
