@@ -1,26 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using RunAsClient.Core;
+using RunAsClient.Properties;
 
 namespace RunAsClient
 {
     class Program
     {
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
-            if (args.Length != 3)
+            var options = new Options();
+            if (CommandLine.Parser.Default.ParseArguments(args, options))
             {
-                Console.WriteLine("Missing arguments");
-                return -1;
+                if (string.IsNullOrWhiteSpace(options.Domain))
+                {
+                    Console.WriteLine(Resources.WrongDomainOption);
+                    return -1;
+                }
+
+                if (string.IsNullOrWhiteSpace(options.UserName))
+                {
+                    Console.WriteLine(Resources.WrongUsernameOption);
+                    return -1;
+                }
+
+
+
+                var nameParts = args[0].Split(new [] { @"\" }, 
+                    StringSplitOptions.RemoveEmptyEntries);
+
+                return -2;
+
+                var domain = nameParts[0];
+                var username = nameParts[1];
+                var password = args[1];
+                var command = args[2];
+
+                return Win32.LaunchCommand(command, 
+                                           domain, 
+                                           username, 
+                                           password);
             }
-
-            var nameParts = args[0].Split(new [] { @"\" }, StringSplitOptions.RemoveEmptyEntries);
-            var password = args[1];
-            var cmd = args[2];
-
-            return Win32.LaunchCommand(cmd, nameParts[0], nameParts[1], password);
         }
     }
 
