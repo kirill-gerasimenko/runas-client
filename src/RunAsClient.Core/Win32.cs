@@ -3,12 +3,12 @@ using System.Runtime.InteropServices;
 
 namespace RunAsClient.Core
 {
-    public class Win32
+    internal static class Win32
     {
         #region "CONTS"
 
-        const UInt32 Infinite = 0xFFFFFFFF;
-        const UInt32 WaitFailed = 0xFFFFFFFF;
+        public const UInt32 Infinite = 0xFFFFFFFF;
+        public const UInt32 WaitFailed = 0xFFFFFFFF;
 
         #endregion
 
@@ -67,7 +67,8 @@ namespace RunAsClient.Core
         );
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool GetExitCodeProcess(IntPtr process, out int exitCode);
+        public static extern bool GetExitCodeProcess(IntPtr process, 
+            out int exitCode);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern UInt32 WaitForSingleObject 
@@ -83,66 +84,6 @@ namespace RunAsClient.Core
 
         #region "FUNCTIONS"
 
-        public static int LaunchCommand(string strCommand, string strDomain, string strName, string strPassword)
-        {
-            // Variables
-            ProcessInformation processInfo = new ProcessInformation();
-            Startupinfo startInfo = new Startupinfo();
-            bool bResult = false;
-            UInt32 uiResultWait = WaitFailed;
-
-            try 
-            {
-                // Create process
-                startInfo.cb = Marshal.SizeOf(startInfo);
-
-                bResult = CreateProcessWithLogonW(
-                    strName, 
-                    strDomain, 
-                    strPassword, 
-                    0x00000002, 
-                    null,
-                    strCommand, 
-                    0, 
-                    IntPtr.Zero, 
-                    null, 
-                    ref startInfo, 
-                    out processInfo
-                );
-                if (!bResult)
-                {
-                    var error = Marshal.GetLastWin32Error();
-                    Console.WriteLine("CreateProcessWithLogonW error #" + error);
-
-                    return error;
-                }
-
-                // Wait for process to end
-                uiResultWait = WaitForSingleObject(processInfo.hProcess, Infinite);
-                if (uiResultWait == WaitFailed) 
-                { 
-                    var error = Marshal.GetLastWin32Error();
-                    Console.WriteLine("WaitForSingleObject error #" + error);
-
-                    return error;
-                }
-
-
-                int code;
-                if (GetExitCodeProcess(processInfo.hProcess, out code))
-                {
-                    return code;
-                }
-
-                return -1;
-            } 
-            finally
-            {
-                // Close all handles
-                CloseHandle(processInfo.hProcess);
-                CloseHandle(processInfo.hThread);
-            }
-        }
 
         #endregion
     }
