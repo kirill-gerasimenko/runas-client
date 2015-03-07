@@ -9,8 +9,12 @@ var configuration   = Argument<string>("configuration", "Release");
 // GLOBAL VARIABLES
 ///////////////////////////////////////////////////////////////////////////////
 
-var solutions       = GetFiles("./**/*.sln");
-var solutionDirs    = solutions.Select(solution => solution.GetDirectory());
+var solutions				= GetFiles("./**/*.sln");
+var solutionDirs			= solutions.Select(solution => solution.GetDirectory());
+var buildDir				= "./build";
+var coreSolutionBuildDir	= "./src/RunAsClient.Core/bin/" + configuration;
+var cliSolutionBuildDir		= "./src/RunAsClient/bin/" + configuration;
+var coreNuspecPath			= "./nuspec/RunAsClient.Core.nuspec";
 
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
@@ -51,7 +55,10 @@ Task("Restore")
     foreach(var solution in solutions)
     {
         Information("Restoring {0}", solution);
-        NuGetRestore(solution);
+        NuGetRestore(solution, new NuGetRestoreSettings 
+		{
+			PackagesDirectory = "./packages"
+		});
     }
 });
 
@@ -70,10 +77,32 @@ Task("Build")
                 .WithTarget("Build")
                 .SetConfiguration(configuration));
     }
+
+	if (DirectoryExists(buildDir))
+		CleanDirectory(buildDir);
+	else
+		CreateDirectory(buildDir);
+
+	CopyFileToDirectory(coreSolutionBuildDir + "/RunAsClient.Core.dll",
+						buildDir);
+	CopyFileToDirectory(cliSolutionBuildDir + "/RunAsClient.exe",
+						buildDir);
+});
+
+Task("Create-Core-NuGet-Package")
+	.IsDependentOn("Build")
+	.Does(() => 
+{
+	NuGetPack(coreNuspecPath, new NuGetPackSettings 
+	{
+		Version = "0.0.1",
+		BasePath = buildDir,
+		OutputDirectory = buildDir
+	});
 });
 
 Task("Default")
-    .IsDependentOn("Build");
+    .IsDependentOn("Create-Core-NuGet-Package");
 
 ///////////////////////////////////////////////////////////////////////////////
 // EXECUTION
