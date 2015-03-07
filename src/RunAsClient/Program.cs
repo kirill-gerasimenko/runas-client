@@ -30,7 +30,8 @@ namespace RunAsClient
                 { "d|domain=", "domain name", d => domain = d },
                 { "u|username=", "user name in domain", u => username = u },
                 { "p|password=", "user's domain password", p => password = p },
-                { "c|command=", "command to be executed under user's credentials", c => command = c }
+                { "c|command=", "command to be executed under user's credentials", 
+                    c => command = c }
             };
 
             try
@@ -41,8 +42,7 @@ namespace RunAsClient
             {
                 Console.Write(@"RunAsClient: ");
                 Console.WriteLine(e.Message);
-                Console.WriteLine(
-                    "Try 'RunAsClient --help' for more information");
+                Console.WriteLine(Resources.TryHelpOption);
 
                 return;
             }
@@ -53,39 +53,31 @@ namespace RunAsClient
                 return;
             }
 
-
-/*
-            if (string.IsNullOrWhiteSpace(options.Domain))
+            Func<string, string, bool> validateWithMessage =
+                (option, errorMessage) =>
             {
-                Console.WriteLine(Resources.InvalidDomainOption);
-                return -1;
-            }
+                if (!string.IsNullOrWhiteSpace(domain)) 
+                    return true;
 
-            if (string.IsNullOrWhiteSpace(options.UserName))
-            {
-                Console.WriteLine(Resources.InvalidUsernameOption);
-                return -1;
-            }
+                Console.WriteLine(errorMessage);
+                Console.WriteLine(Resources.TryHelpOption);
 
-            if (string.IsNullOrWhiteSpace(options.Password))
-            {
-                Console.WriteLine(Resources.InvalidPasswordOption);
-                return -1;
-            }
+                return false;
+            };
 
-            if (string.IsNullOrWhiteSpace(options.Command))
-            {
-                Console.WriteLine(Resources.InvalidCommandOption);
-                return -1;
-            }
+            if (!validateWithMessage(domain, Resources.InvalidDomainOption))
+                return;
 
-            return RunAsLauncher.LaunchCommand(options.Command, 
-                                               options.Domain, 
-                                               options.UserName, 
-                                               options.Password);
-            }
-*/
+            if (!validateWithMessage(username, Resources.InvalidUsernameOption))
+                return;
+
+            if (!validateWithMessage(password, Resources.InvalidPasswordOption))
+                return;
+
+            if (!validateWithMessage(command, Resources.InvalidCommandOption))
+                return;
+
+            RunAsLauncher.LaunchCommand(command, domain, username, password);
         }
     }
-
 }

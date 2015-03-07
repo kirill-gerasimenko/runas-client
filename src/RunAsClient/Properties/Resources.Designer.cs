@@ -95,5 +95,14 @@ namespace RunAsClient.Properties {
                 return ResourceManager.GetString("InvalidUsernameOption", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Try &apos;RunAsClient --help&apos; for more information.
+        /// </summary>
+        internal static string TryHelpOption {
+            get {
+                return ResourceManager.GetString("TryHelpOption", resourceCulture);
+            }
+        }
     }
 }
