@@ -96,7 +96,7 @@ Task("Create-Core-NuGet-Package")
 {
 	NuGetPack(coreNuspecPath, new NuGetPackSettings 
 	{
-		Version = "0.0.1",
+		Version = "0.0.2",
 		BasePath = buildDir,
 		OutputDirectory = buildDir
 	});

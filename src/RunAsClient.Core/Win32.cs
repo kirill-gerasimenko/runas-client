@@ -5,10 +5,13 @@ namespace RunAsClient.Core
 {
     internal static class Win32
     {
-        #region "CONTS"
+        #region "CONST"
 
         public const UInt32 Infinite = 0xFFFFFFFF;
         public const UInt32 WaitFailed = 0xFFFFFFFF;
+        public const int Logon32ProviderDefault = 0;
+        public const int Logon32LogonInteractive = 2;
+        public const int Logon32LogonNewCredentials = 9;
 
         #endregion
 
@@ -79,7 +82,14 @@ namespace RunAsClient.Core
 
         [DllImport("kernel32", SetLastError=true)]
         public static extern Boolean CloseHandle (IntPtr handle);
- 
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        public static extern bool LogonUser(string pszUsername, 
+                                            string pszDomain, 
+                                            string pszPassword,
+                                            int dwLogonType, 
+                                            int dwLogonProvider, 
+                                            ref IntPtr phToken);
         #endregion
 
         #region "FUNCTIONS"
